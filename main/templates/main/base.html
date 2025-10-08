@@ -1,0 +1,176 @@
+<!-- main/templates/main/base.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}NOVACOM - L'Innovation au Service du Commerce{% endblock %}</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuration Tailwind personnalisée -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'novacom-yellow': '#FDB913',
+                        'novacom-blue': '#1e3a8a',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Animations personnalisées */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-white">
+    
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="{% url 'main:index' %}" class="flex items-center">
+                    <div class="flex flex-col">
+                        <span class="text-3xl font-bold text-novacom-yellow">NOVACOM</span>
+                        <span class="text-xs text-novacom-blue font-medium">L'INNOVATION AU SERVICE DU COMMERCE</span>
+                    </div>
+                </a>
+                
+                <!-- Menu Desktop -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="{% url 'main:index' %}" class="text-gray-700 hover:text-novacom-yellow transition font-medium">Accueil</a>
+                    <a href="{% url 'main:index' %}#services" class="text-gray-700 hover:text-novacom-yellow transition font-medium">Services</a>
+                    <a href="{% url 'main:realisations' %}" class="text-gray-700 hover:text-novacom-yellow transition font-medium">Réalisations</a>
+                    <a href="{% url 'main:index' %}#contact" class="text-gray-700 hover:text-novacom-yellow transition font-medium">Contact</a>
+                </div>
+
+                <!-- Bouton Menu Mobile -->
+                <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                    <svg id="menu-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    <svg id="close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Menu Mobile -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-4 pt-2 pb-4 space-y-2">
+                <a href="{% url 'main:index' %}" class="block py-2 text-gray-700 hover:text-novacom-yellow transition">Accueil</a>
+                <a href="{% url 'main:index' %}#services" class="block py-2 text-gray-700 hover:text-novacom-yellow transition">Services</a>
+                <a href="{% url 'main:realisations' %}" class="block py-2 text-gray-700 hover:text-novacom-yellow transition">Réalisations</a>
+                <a href="{% url 'main:index' %}#contact" class="block py-2 text-gray-700 hover:text-novacom-yellow transition">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenu Principal -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-novacom-blue text-white py-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="text-2xl font-bold text-novacom-yellow mb-4">NOVACOM</h3>
+                    <p class="text-blue-200">L'innovation au service du commerce</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Navigation</h4>
+                    <div class="space-y-2">
+                        <a href="{% url 'main:index' %}" class="block text-blue-200 hover:text-novacom-yellow transition">Accueil</a>
+                        <a href="{% url 'main:index' %}#services" class="block text-blue-200 hover:text-novacom-yellow transition">Services</a>
+                        <a href="{% url 'main:realisations' %}" class="block text-blue-200 hover:text-novacom-yellow transition">Réalisations</a>
+                        <a href="{% url 'main:index' %}#contact" class="block text-blue-200 hover:text-novacom-yellow transition">Contact</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Services</h4>
+                    <div class="space-y-2 text-blue-200">
+                        <div>Graphic Design</div>
+                        <div>Community Management</div>
+                        <div>Développement Web</div>
+                        <div>Media Buying</div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Contact</h4>
+                    <div class="space-y-2 text-blue-200">
+                        <div>Yaoundé, Cameroun</div>
+                        <div>+237 6 98 79 41 58</div>
+                        <div>contact.novacomagency2@gmail.com</div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-blue-800 pt-8 text-center text-blue-200">
+                <p>&copy; 2024 NOVACOM. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Menu Mobile Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
+
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+            menuIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+        });
+
+        // Fermer le menu mobile lors du clic sur un lien
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            });
+        });
+
+        // Smooth scroll pour les ancres
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+                    document.querySelector(href).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

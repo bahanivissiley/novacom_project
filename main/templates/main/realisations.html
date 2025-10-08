@@ -1,0 +1,175 @@
+<!-- main/templates/main/realisations.html -->
+{% extends 'main/base.html' %}
+{% load custom_filters %}
+
+{% block title %}NOVACOM - Nos Réalisations{% endblock %}
+
+{% block content %}
+
+<div class="pt-28 pb-20 px-4">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-12 fade-in">
+            <h1 class="text-5xl font-bold text-novacom-blue mb-4">Toutes Nos Réalisations</h1>
+            <p class="text-xl text-gray-600">Découvrez l'ensemble de nos projets et réalisations</p>
+        </div>
+
+        <!-- Filtres -->
+        <div class="flex flex-wrap justify-center gap-4 mb-12">
+            <a href="{% url 'main:realisations' %}" 
+               class="px-6 py-2 rounded-full font-semibold transition {% if categorie_active == 'all' %}bg-novacom-yellow text-novacom-blue{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}">
+                Tous
+            </a>
+            {% for code, label in categories %}
+            <a href="{% url 'main:realisations' %}?categorie={{ code }}" 
+               class="px-6 py-2 rounded-full font-semibold transition {% if categorie_active == code %}bg-novacom-yellow text-novacom-blue{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}">
+                {{ label }}
+            </a>
+            {% endfor %}
+        </div>
+
+        <!-- Liste des Réalisations -->
+        <div class="space-y-12">
+            {% for realisation in realisations %}
+                
+                {% if realisation.type == 'simple' %}
+                <!-- Réalisation Simple -->
+                <a href="{% url 'main:realisation_detail' realisation.id %}" class="block bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition fade-in">
+                    <div class="grid md:grid-cols-2">
+                        <div class="h-64 md:h-auto overflow-hidden">
+                            {% if realisation.image %}
+                            <img src="{{ realisation.image.url }}" alt="{{ realisation.titre }}" class="w-full h-full object-cover hover:scale-105 transition duration-300">
+                            {% else %}
+                            <div class="w-full h-full bg-gradient-to-br from-novacom-blue to-blue-800 flex items-center justify-center">
+                                <span class="text-white text-8xl">🎨</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="p-8 flex flex-col justify-center">
+                            <span class="text-sm text-novacom-yellow font-semibold mb-2">{{ realisation.get_category_display_custom }}</span>
+                            <h3 class="text-3xl font-bold text-novacom-blue mb-4 hover:text-novacom-yellow transition">{{ realisation.titre }}</h3>
+                            <p class="text-gray-600 text-lg mb-4">{{ realisation.description }}</p>
+                            <div class="flex items-center text-novacom-blue font-semibold">
+                                <span>Voir les détails</span>
+                                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                {% else %}
+                <!-- Réalisation Projet -->
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg p-8 fade-in">
+                    <div class="mb-6">
+                        <span class="text-sm text-novacom-yellow font-semibold">{{ realisation.get_category_display_custom }}</span>
+                        <h3 class="text-3xl font-bold text-novacom-blue mt-2 mb-4">{{ realisation.titre }}</h3>
+                        <p class="text-gray-600 text-lg mb-4">{{ realisation.description }}</p>
+                        
+                        <div class="grid md:grid-cols-3 gap-4 text-sm mb-4">
+                            {% if realisation.client %}
+                            <div>
+                                <span class="font-semibold text-novacom-blue">Client:</span>
+                                <span class="text-gray-600 ml-2">{{ realisation.client }}</span>
+                            </div>
+                            {% endif %}
+                            {% if realisation.date_debut %}
+                            <div>
+                                <span class="font-semibold text-novacom-blue">Début:</span>
+                                <span class="text-gray-600 ml-2">{{ realisation.date_debut }}</span>
+                            </div>
+                            {% endif %}
+                            {% if realisation.date_fin %}
+                            <div>
+                                <span class="font-semibold text-novacom-blue">Fin:</span>
+                                <span class="text-gray-600 ml-2">{{ realisation.date_fin }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        {% if realisation.services %}
+                        <div class="mt-4">
+                            <span class="font-semibold text-novacom-blue">Services:</span>
+                            <div class="flex flex-wrap gap-2 mt-2">
+                                {% for service in realisation.services|split:',' %}
+                                <span class="bg-blue-100 text-novacom-blue px-3 py-1 rounded-full text-sm">
+                                    {{ service|trim }}
+                                </span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Galerie d'images -->
+                    <div class="grid md:grid-cols-3 gap-4">
+                        {% if realisation.image1 %}
+                        <div class="h-64 overflow-hidden rounded-lg">
+                            <img src="{{ realisation.image1.url }}" alt="{{ realisation.titre }} 1" class="w-full h-full object-cover hover:scale-105 transition duration-300">
+                        </div>
+                        {% endif %}
+                        {% if realisation.image2 %}
+                        <div class="h-64 overflow-hidden rounded-lg">
+                            <img src="{{ realisation.image2.url }}" alt="{{ realisation.titre }} 2" class="w-full h-full object-cover hover:scale-105 transition duration-300">
+                        </div>
+                        {% endif %}
+                        {% if realisation.image3 %}
+                        <div class="h-64 overflow-hidden rounded-lg">
+                            <img src="{{ realisation.image3.url }}" alt="{{ realisation.titre }} 3" class="w-full h-full object-cover hover:scale-105 transition duration-300">
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+
+            {% empty %}
+            <!-- Message si aucune réalisation -->
+            <div class="text-center py-20">
+                <div class="text-6xl mb-4">📁</div>
+                <h3 class="text-2xl font-bold text-novacom-blue mb-2">Aucune réalisation disponible</h3>
+                <p class="text-gray-600">Nos projets seront bientôt disponibles ici.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Bouton Retour -->
+        <div class="text-center mt-12">
+            <a href="{% url 'main:index' %}" class="inline-flex items-center bg-novacom-blue text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-800 transition">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Retour à l'Accueil
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Animation au scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // Observer tous les éléments fade-in
+    document.querySelectorAll('.fade-in').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+        observer.observe(el);
+    });
+</script>
+{% endblock %}
